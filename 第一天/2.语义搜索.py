@@ -1,4 +1,6 @@
+from itertools import chain
 import os
+from typing import List
 from dotenv import load_dotenv
 from langchain_openai import OpenAIEmbeddings
 from langchain_community.document_loaders import PlaywrightURLLoader
@@ -49,5 +51,20 @@ chroma = Chroma(
 # 存储
 chroma.add_documents(documents=allSplit)
 
-# 查询
-print(chroma.similarity_search_with_score(query="今日热点",k=3))
+# 相似度查询
+results = chroma.similarity_search("今日新闻")
+print(results)
+
+# 分数相似度查询
+results = chroma.similarity_search_with_score("今日新闻")
+print(results)
+
+# 向量相似度查询
+results = chroma.similarity_search_by_vector(embedding.embed_query("今日新闻"))
+print(results)
+
+
+from langchain_core import chain
+@chain
+def retrierver(query: str) -> List[Document]:
+    return chroma.similarity_search(query=query,k=1)
