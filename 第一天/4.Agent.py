@@ -46,9 +46,11 @@ for event in graph.stream(
     },
 #  values	在每一步之后流式传输图的完整状态
 # updates	在每一步之后仅流式传输状态更新
-# messages	流式传输任何 LLM 调用节点的 LLM 令牌和元数据 (2 元组)
+# messages	一个个token输出
 # custom	从图节点内部流式传输自定义数据
 # debug	在图执行期间流式传输尽可能多的信息
-    stream_mode="values"
+    # stream_mode="values"
+    stream_mode="messages"
 ):
-    print(event["messages"][-1].pretty_print())
+    # print(event["messages"][-1].pretty_print())
+    print(event[0].content)
